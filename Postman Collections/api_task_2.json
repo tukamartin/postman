@@ -104,7 +104,7 @@
 							"timestampComparisonBefore = moment().format(\"YYYY-MM-DD hh:mm:ss.SSS\");\r",
 							"pm.collectionVariables.set(\"timestampComparisonBefore\", timestampComparisonBefore);\r",
 							"\r",
-							"setTimeout(function(){}, 1000);\r",
+							"setTimeout(function(){}, 2000);\r",
 							""
 						],
 						"type": "text/javascript",
