@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "745777cf-7fe9-470f-9d9f-b69dd38d0304",
+		"name": "API Task 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c41356d-8ef1-476d-9bfd-fdd68556fc6b",
+						"exec": [
+							"//Test status code\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"//Test ID\r",
+							"pm.test(\"Id is correct\", function () {\r",
+							"    pm.expect(pm.response.json().id).to.not.be.null;\r",
+							"    pm.expect(pm.response.json().id).to.not.be.undefined;\r",
+							"    pm.expect(pm.response.json().id).to.not.be.a(\"\");\r",
+							"    pm.expect(pm.response.json().id).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"//Test createdAt\r",
+							"setTimeout(function(){}, 1000);\r",
+							"const moment = require(\"moment\");\r",
+							"var timestamp = new Date();\r",
+							"timestamp = moment(pm.response.json().createdAt).format(\"YYYY-MM-DD hh:mm:ss.SSS\");\r",
+							"var timestampComparisonAfter = new Date();\r",
+							"timestampComparisonAfter = moment().format(\"YYYY-MM-DD hh:mm:ss.SSS\");\r",
+							"\r",
+							"pm.test(\"Created at is correct\", function () {\r",
+							"    pm.expect(pm.response.json().createdAt).to.not.be.null;\r",
+							"    pm.expect(pm.response.json().createdAt).to.not.be.undefined;\r",
+							"    pm.expect(pm.response.json().createdAt).to.not.be.a(\"\");\r",
+							"    pm.expect(pm.response.json().createdAt).to.be.a('string');\r",
+							"    pm.expect(moment(timestamp).isBetween(pm.collectionVariables.get(\"timestampComparisonBefore\"),  timestampComparisonAfter)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"//Test response time\r",
+							"pm.test(\"Response time is less than 300ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							"//Validate schema\r",
+							"var schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"items\": [\r",
+							"    {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"job\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"id\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"createdAt\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"name\",\r",
+							"        \"job\",\r",
+							"        \"id\",\r",
+							"        \"createdAt\"\r",
+							"      ]\r",
+							"    }\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Json Schema Validation\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2abd9060-1c6a-437e-9c63-82d4f0a2224f",
+						"exec": [
+							"pm.collectionVariables.set(\"user\", pm.iterationData.get.user);\r",
+							"pm.collectionVariables.set(\"job\", pm.iterationData.get.job);\r",
+							"\r",
+							"const moment = require(\"moment\");\r",
+							"var timestampComparisonBefore = new Date();\r",
+							"timestampComparisonBefore = moment().format(\"YYYY-MM-DD hh:mm:ss.SSS\");\r",
+							"pm.collectionVariables.set(\"timestampComparisonBefore\", timestampComparisonBefore);\r",
+							"\r",
+							"setTimeout(function(){}, 1000);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "b0cc6b1e-df49-46e9-8cf4-aed63591955d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{user}}\",\r\n    \"job\": \"{{job}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://reqres.in/api/users"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "409dcbce-9573-43fb-97c6-9b43969e45f3",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "accd58c8-d73f-48be-81a2-b94e495b886d",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "job",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "timestampComparisonBefore",
+			"value": ""
+		}
+	]
+}
